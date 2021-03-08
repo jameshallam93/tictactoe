@@ -43,6 +43,9 @@ const Board = () =>{
             return;
         }
         setNotification("That square is already taken - try again")
+        setTimeout(()=>{
+            setNotification("")
+        }, 3000)
 
     }
     
@@ -65,15 +68,19 @@ const Board = () =>{
 
 
     return (
-        
-    <div className = "board">
+    <>
+    <div className = "notification">
         {notification? 
             <Notification notice = {notification}/>
             :
             null
         }
+    </div>
+    <div className = "board">
+
         {generateBoard()}
     </div>
+    </>
             
 )}
 

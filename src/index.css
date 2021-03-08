@@ -2,7 +2,7 @@ body {
     background-color: rgb(72, 209, 72);
     padding: 100;
     margin: 100;
-    box-sizing:border-box
+    box-sizing:border-box;
 }
 button {
     width: 100px;
@@ -16,7 +16,11 @@ button {
     justify-content: center;
     background: rgb(51, 235, 121);
   }
-
+.notification {
+    display:flex;
+    align-items:center;
+    justify-content: center;
+}
 .board {
     display:grid;
     height: 300px;
