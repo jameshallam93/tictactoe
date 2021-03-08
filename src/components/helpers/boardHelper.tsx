@@ -44,14 +44,22 @@ const boardHelper = {
     hasWon (board:Array<string>, currentSymbol:string) {
         let winner = false
         this.winningCombos.map(combo =>{
-
             if ((board[combo[0]] === currentSymbol) && (board[combo[1]] === currentSymbol) && (board[combo[2]] === currentSymbol)){
                 winner = true
                 
             }
         })
-
         return winner
+    },
+    
+    hasDrawn (board:Array<string>) {
+        let nonEmptySquares = board.filter(x=>x)
+        console.log(nonEmptySquares)
+        if (nonEmptySquares.length === board.length -1){
+            return true
+        }
+        return false
+
     }
 }
 

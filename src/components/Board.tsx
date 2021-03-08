@@ -20,6 +20,13 @@ const Board = () =>{
 
     const setSquareValue = (index:number) =>{
 
+        if (helper.hasDrawn(board)){
+            helper.showNotification(setNotification, "Its a tie! Try again")
+            setTimeout(()=>{
+                resetBoard()
+            },3000)
+        }
+
         if (board[index] === ""){
             const newBoard = helper.generateNewBoard(board, index, currentSymbol)
             setBoard(newBoard)
