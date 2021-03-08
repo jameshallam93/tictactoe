@@ -4,7 +4,7 @@ body {
     margin: 100;
     box-sizing:border-box;
 }
-button {
+.squareButton {
     width: 100px;
     height: 100px
 }
