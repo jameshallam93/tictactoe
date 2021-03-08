@@ -6,9 +6,9 @@ A learning project focussing on using typescript and webpack
 Todos:
 
 ## features
-  ~~- Finish notification component - reposition to above board container~~
+  - ~~Finish notification component - reposition to above board container~~
   - ~~implement hasWon() function~~
-  - implement hasDrawn() function
+  - ~~implement hasDrawn() function~~
   - implement AI/cpu logic
   - ~~resetBoard() function~~
   - choose player symbol? x/o
