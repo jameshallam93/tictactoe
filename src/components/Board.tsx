@@ -23,11 +23,23 @@ const Board = () =>{
         if (board[index] === ""){
             const newBoard = helper.generateNewBoard(board, index, currentSymbol)
             setBoard(newBoard)
+
+            if (helper.hasWon(newBoard, currentSymbol)){
+                helper.showNotification(setNotification, `${currentSymbol} has won!`)
+                setTimeout(()=>{
+                    resetBoard()
+                },3000)
+                return;}
+
             switchTurns()
+            }else{
+                helper.showNotification(setNotification, "That square is already taken, please try again")
             return;
-        }
-        helper.showNotification(setNotification, "That square is already taken, please try again")
+            }
+        
+
     }
+    
     const resetBoard = () =>{
         setBoard(["","","","","","","","",""])
     }
