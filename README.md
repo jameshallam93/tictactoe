@@ -19,5 +19,5 @@ Todos:
   - multiplayer over internet?
   
 ## bugs/other
-  - reformat into separate modules
+  - ~~reformat into separate modules~~
 
