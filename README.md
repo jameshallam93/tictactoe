@@ -7,10 +7,10 @@ Todos:
 
 ## features
   ~~- Finish notification component - reposition to above board container~~
-  - implement hasWon() function
-  - implement draw() function
+  - ~~implement hasWon() function~~
+  - implement hasDrawn() function
   - implement AI/cpu logic
-  - resetBoard() function
+  - ~~resetBoard() function~~
   - choose player symbol? x/o
   
 ### future features
