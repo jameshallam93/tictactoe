@@ -18,5 +18,6 @@ Todos:
   - user login system and rankings
   - multiplayer over internet?
   
-## bugs
+## bugs/other
+  - reformat into separate modules
 
