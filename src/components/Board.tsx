@@ -20,12 +20,7 @@ const Board = () =>{
 
     const setSquareValue = (index:number) =>{
 
-        if (helper.hasDrawn(board)){
-            helper.showNotification(setNotification, "Its a tie! Try again")
-            setTimeout(()=>{
-                resetBoard()
-            },3000)
-        }
+
 
         if (board[index] === ""){
             const newBoard = helper.generateNewBoard(board, index, currentSymbol)
@@ -38,7 +33,16 @@ const Board = () =>{
                 },3000)
                 return;}
 
+            if (helper.hasDrawn(newBoard)){
+                helper.showNotification(setNotification, "Its a tie! Try again")
+                setTimeout(()=>{
+                    resetBoard()
+                },3000)
+                return;
+            }
+
             switchTurns()
+            
             }else{
                 helper.showNotification(setNotification, "That square is already taken, please try again")
             return;
