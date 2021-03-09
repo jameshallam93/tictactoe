@@ -20,8 +20,6 @@ const Board = () =>{
 
     const setSquareValue = (index:number) =>{
 
-
-
         if (board[index] === ""){
             const newBoard = helper.generateNewBoard(board, index, currentSymbol)
             setBoard(newBoard)
@@ -58,8 +56,8 @@ const Board = () =>{
     return (
     <>
         <div className = "container">
-        <h1> Tic Tac Toe</h1>
-        <h4> Built using typescript and webpack</h4>
+        <h1> {helper.boardHeader}</h1>
+        <h4> {helper.boardInfo}</h4>
 
         <div className = "notification">
             {notification? 
