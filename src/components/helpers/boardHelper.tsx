@@ -54,8 +54,8 @@ const boardHelper = {
     
     hasDrawn (board:Array<string>) {
         let nonEmptySquares = board.filter(x=>x)
-        console.log(nonEmptySquares)
-        if (nonEmptySquares.length === board.length -1){
+
+        if (nonEmptySquares.length === board.length){
             return true
         }
         return false
