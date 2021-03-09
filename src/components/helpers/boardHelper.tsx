@@ -1,6 +1,10 @@
 import React from "react"
 
 const boardHelper = {
+    
+    boardHeader : "Tic Tac Toe",
+    boardInfo: "Built using typescript and webpack",
+
     generateNewBoard(board:Array<string>, index:number, currentSymbol:string) {
         let newBoard = board.slice()
         newBoard[index] = currentSymbol
