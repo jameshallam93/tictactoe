@@ -24,6 +24,7 @@ const boardTestHelper = {
     ],
     symbol : "X",
 
+
     returnWinningBoards  ():string[][] {
 
         //combinations of indexes which produce winning positions
@@ -40,8 +41,9 @@ const boardTestHelper = {
         })
         return winningBoards
     },
-    returnHasWonTruthArray  (boards:string[][]):Array<boolean> {
 
+    returnHasWonTruthArray  (boards:string[][]):Array<boolean> {
+      
         let truthValues: Array<boolean> = []
     
         boards.map(winBoard =>{
@@ -51,8 +53,5 @@ const boardTestHelper = {
         return truthValues
     }
 
-
-
-}
 
 export default boardTestHelper
