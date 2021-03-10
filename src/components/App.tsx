@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import Board from "./Board"
-const App = () =>{
 
-
+const App = ():any =>{
     return (
         <div>
             <Board />

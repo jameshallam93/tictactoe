@@ -1,27 +1,25 @@
-import React from "react"
+import React, { useEffect, useReducer } from "react"
 import { useState } from "react"
 import Notification from "./Notification"
 import helper from "./helpers/boardHelper"
-
+//NB currently, player must always be X for the internal logic to work
 
 
 
 
 const Board = () =>{
 
-    const[turnOf, setTurn] = useState("PLAYER")
+    const[playersTurn, setPlayersTurn] = useState(true)
     const[board, setBoard] = useState(["","","","","","","","",""])
     const[notification, setNotification] = useState("")
 
+    const[,forceUpdate] = useReducer(x=>x+1, 0)
+
     const switchTurns = () =>{
-        if (turnOf === "CPU"){
-            setTurn("PLAYER")
-        }
-        if (turnOf === "PLAYER"){
-            setTurn("CPU")
-        }
+        setPlayersTurn(!playersTurn)
+        forceUpdate()
     }
-    const currentSymbol = turnOf === "PLAYER"? 
+    const currentSymbol = playersTurn? 
     "X"
      :
     "O"
@@ -30,79 +28,58 @@ const Board = () =>{
         setBoard(["","","","","","","","",""])
     }
 
-    const setSquareValue = (board:Array<string>, index:number) =>{
-        const newBoard = helper.generateNewBoard(board, index, currentSymbol)
-        console.log(newBoard)
-        setBoard(newBoard)
+    const cpuTurn = async () =>{
+        const bestMove = helper.bestMove(board)
+        console.log(bestMove)
+        let cpuBoard = board.slice()
+        cpuBoard[bestMove] = currentSymbol
+        await setBoard(cpuBoard)
         switchTurns()
-        return newBoard
     }
 
-    const setPlayerChoice = async (index:number) =>{
-
-        if (helper.hasDrawn(board)){
-
-            helper.showNotification(setNotification, "Its a tie! Try again")
-            helper.timeoutBoardReset(resetBoard)
-        }
-
-        if (board[index] !== ""){
-            helper.showNotification(setNotification, "That square is already taken, please try again")
-            return;
-        }
-        const newBoard = helper.generateNewBoard(board, index, currentSymbol)
-        setBoard(newBoard)
-        
-
-        if (helper.hasWon(newBoard, currentSymbol)){
-                        
-            helper.showNotification(setNotification, `${currentSymbol} has won!`)
-            helper.timeoutBoardReset(resetBoard)
-
-            return
-        }
-
-         switchTurns()
-        console.log(turnOf)
-        setTimeout(()=>{
-            makeBestMove(newBoard)
-        }, 500)
-
+    const takeUserTurn = async (index:number) =>{
+        await setSquareValue(index)
+        forceUpdate()
+        switchTurns()
 
 
     }
+    const setSquareValue = async (index:number) =>{
 
-    const makeBestMove = (board:Array<string>) =>{
-        let bestScore = 1
-        let bestMove = 4
-        for (let i = 0; i < 8; i++){
-            console.log(board[i])
-            if (board[i] === ""){
-                console.log(i);
-                
-                const newBoard = helper.generateNewBoard(board, i, currentSymbol)
-                const score = 1000
-                if (score > bestScore){
-                    bestScore = score
-                    bestMove = i
-                }
+        if (board[index] === ""){
+            const newBoard = helper.generateNewBoard(board, index, currentSymbol)
+            await setBoard(newBoard)
+            forceUpdate()
+            if (helper.hasWon(newBoard, currentSymbol)){
+                helper.showNotification(setNotification, `${currentSymbol} has won!`)
+                setTimeout(()=>{
+                    resetBoard()
+                },3000)
+                return;}
+
+            if (helper.hasDrawn(newBoard)){
+                helper.showNotification(setNotification, "Its a tie! Try again")
+                setTimeout(()=>{
+                    resetBoard()
+                },3000)
+                return;
             }
+            return newBoard
+
+
+            
+        }else{
+            helper.showNotification(setNotification, "That square is already taken, please try again")
+        return
+    
         }
-        setSquareValue(board, bestMove)
     }
-    
-    const minimax = () =>{
 
-            return 100
-
-
-    }
-    
     return (
     <>
         <div className = "container">
-        <h1> Tic Tac Toe</h1>
-        <h4> Built using typescript and webpack</h4>
+        <h1> {helper.boardHeader}</h1>
+        <h4> {helper.boardInfo}</h4>
 
         <div className = "notification">
             {notification? 
@@ -113,9 +90,10 @@ const Board = () =>{
         </div>
         <div className = "buttons">
             <button onClick = {resetBoard}>reset</button>
+            <button onClick = {cpuTurn}> cpu</button>
         </div>
         <div className = "board">
-            {helper.generateBoard(board, setPlayerChoice)}
+            {helper.generateBoard(board, takeUserTurn)}
         </div>
 
         </div>

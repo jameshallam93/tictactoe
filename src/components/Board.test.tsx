@@ -6,9 +6,8 @@ import { render, fireEvent } from "@testing-library/react"
 import "@testing-library/jest-dom/extend-expect"
 
 import Enzyme from "enzyme"
+
 import { shallow, mount } from "enzyme"
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
-Enzyme.configure({ adapter: new Adapter() })
 
 
 //to do:
@@ -125,7 +124,6 @@ describe("clicking on", ()=>{
         test("calls on helper.generateNewBoard only once", ()=>{
 
             fireEvent.click(buttons[0])
-            const symbol = buttons[0].textContent
 
             fireEvent.click(buttons[0])
 
