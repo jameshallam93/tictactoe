@@ -21,7 +21,8 @@ const Board = () =>{
         act(()=>
         setPlayersTurn(!playersTurn))
     }
-    const currentSymbol = playersTurn? "O" : "X"
+    const playerSymbol = "O"
+    const cpuSymbol = "X"
 
     const resetBoard = () =>{
         setBoard(["","","","","","","","",""])
@@ -31,16 +32,17 @@ const Board = () =>{
 
     const cpuTurn = async () =>{
 
-        const cpuMove = bestMove(board, currentSymbol)
+        const cpuMove = bestMove(board, cpuSymbol)
 
         let cpuBoard = board.slice()
-        cpuBoard[cpuMove] = currentSymbol
+        cpuBoard[cpuMove] = cpuSymbol
 
         act(()=>{setBoard(cpuBoard)})
 
-        const winOrDraw = helper.checkForWinOrDraw(setNotification, resetBoard, cpuBoard, currentSymbol)
-
+        const winOrDraw = helper.checkForWinOrDraw(setNotification, resetBoard, cpuBoard, cpuSymbol)
+        if (!winOrDraw){
         switchTurns()
+        }
         
 
     }
@@ -53,21 +55,20 @@ const Board = () =>{
 
         if (board[index] === ""){
 
-            const newBoard = helper.generateNewBoard(board, index, currentSymbol)
+            const newBoard = helper.generateNewBoard(board, index, playerSymbol)
             act(()=>{setBoard(newBoard)})
 
-            const winOrDraw = helper.checkForWinOrDraw(setNotification, resetBoard, newBoard, currentSymbol)
-
+            const winOrDraw = helper.checkForWinOrDraw(setNotification, resetBoard, newBoard, playerSymbol)
+            if (!winOrDraw){
                 switchTurns()
-            
+            }
             return newBoard
-
-        }else{
-            helper.showNotification(setNotification, "That square is already taken, please try again")
+        }
+        helper.showNotification(setNotification, "That square is already taken, please try again")
         return
     
         }
-    }
+    
 
     return (
     <>
