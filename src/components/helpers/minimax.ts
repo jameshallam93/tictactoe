@@ -46,7 +46,7 @@ const bestMove =  (board:Array<string>, currentSymbol:string):number => {
 
         const value = minimax(newBoard, 0, true)
         if (value === -10){
-            console.log("negten at bestmove");
+
             
         }
         newBoard[emptyIndex] = ""
@@ -67,17 +67,12 @@ const minimax = (board:Array<string>, depth:number, playersTurn:boolean):number 
     
     const currentSymbol = playersTurn? "X" : "O"
     let score = evaluateBoard(board)
-    if (score === -10){
 
-        
-    }
     if(score === -10){
-
         return score
         
     }
     if(score === 10){
-
         return score - depth
     }
 
@@ -94,18 +89,15 @@ const minimax = (board:Array<string>, depth:number, playersTurn:boolean):number 
             if (square === ""){
                 
                 newBoard[index] = "X"
-                
                 const newDepth = depth + 1
                 const newValue = minimax(newBoard, newDepth, true)
 
-                
                 if (newValue > bestValue){
                     bestValue = newValue
                 }
             }
         })
         return bestValue
-    
     }
 
     let bestValue = 1000
@@ -115,25 +107,17 @@ const minimax = (board:Array<string>, depth:number, playersTurn:boolean):number 
         let newBoard = board.slice()
 
         if (square === ""){
-
             
             newBoard[index] = "O"
             const newDepth = depth + 1
             const newValue = minimax(newBoard, newDepth, false)
 
-
             if (newValue < bestValue){
-               
-                bestValue = newValue
-
-                
+                bestValue = newValue    
             }
         }
     })
-    console.log(`best value in minimizer turn ${bestValue}`);
-    
     return bestValue
-   
 }
 
 
