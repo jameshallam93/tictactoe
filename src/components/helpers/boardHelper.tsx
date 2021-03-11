@@ -19,6 +19,13 @@ const boardHelper = {
         }, 3000)
     },
 
+    showNotificationAndResetBoard  (setNotification:(notification:string)=>void, resetBoard:()=>void, notification:string) {
+        this.showNotification(setNotification, notification)
+        setTimeout(()=>{
+            resetBoard()
+        }, 3000)
+    },
+
     generateBoard (board:Array<string>, setPlayerChoice:(index:number)=>void):any {
         return(
 
@@ -62,14 +69,26 @@ const boardHelper = {
     
     hasDrawn (board:Array<string>):boolean {
         let nonEmptySquares = board.filter(x=>x)
-        ///removed a -1
+
         if (nonEmptySquares.length === board.length){
             return true
         }
         return false
 
-    }
-    
+    },
+    checkForWinOrDraw (setNotification:(notification:string)=>void, resetBoard:()=>void, board:Array<string>, currentSymbol:string):boolean {
+        if (this.hasWon(board, currentSymbol)){
+
+            this.showNotificationAndResetBoard(setNotification, resetBoard, `${currentSymbol} has won!`)
+            return true
+        }
+        if (this.hasDrawn(board)){
+
+            this.showNotificationAndResetBoard(setNotification, resetBoard, "Its a tie! Try again!")
+            return true
+        }
+        return false
+        }
 
 }
 
