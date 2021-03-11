@@ -122,4 +122,4 @@ const minimax = (board:Array<string>, depth:number, playersTurn:boolean):number 
 }
 
 
-module.exports = bestMove
+export default bestMove
