@@ -2,6 +2,8 @@ import React, { useEffect, useReducer } from "react"
 import { useState } from "react"
 import Notification from "./Notification"
 import helper from "./helpers/boardHelper"
+import { act } from "react-dom/test-utils"
+import bestMove from "./helpers/minimax"
 //NB currently, player must always be X for the internal logic to work
 
 
@@ -13,11 +15,10 @@ const Board = () =>{
     const[board, setBoard] = useState(["","","","","","","","",""])
     const[notification, setNotification] = useState("")
 
-    const[,forceUpdate] = useReducer(x=>x+1, 0)
 
-    const switchTurns = () =>{
-        setPlayersTurn(!playersTurn)
-        forceUpdate()
+    const switchTurns = async () =>{
+        act(()=>
+        setPlayersTurn(!playersTurn))
     }
     const currentSymbol = playersTurn? 
     "X"
@@ -29,27 +30,40 @@ const Board = () =>{
     }
 
     const cpuTurn = async () =>{
-        const bestMove = helper.bestMove(board)
-        console.log(bestMove)
+
+        const cpuMove = bestMove(board, currentSymbol)
+
         let cpuBoard = board.slice()
-        cpuBoard[bestMove] = currentSymbol
-        await setBoard(cpuBoard)
+        cpuBoard[cpuMove] = currentSymbol
+        act(()=>{setBoard(cpuBoard)})
+        if (helper.hasWon(cpuBoard, currentSymbol)){
+            helper.showNotification(setNotification, `${currentSymbol} has won!`)
+            setTimeout(()=>{
+                resetBoard()
+            },3000)
+            return;}
+            if (helper.hasDrawn(cpuBoard)){
+                helper.showNotification(setNotification, "Its a tie! Try again")
+                setTimeout(()=>{
+                    resetBoard()
+                },3000)
+                return;
+            }
         switchTurns()
+
     }
 
     const takeUserTurn = async (index:number) =>{
         await setSquareValue(index)
-        forceUpdate()
-        switchTurns()
-
 
     }
+
     const setSquareValue = async (index:number) =>{
 
         if (board[index] === ""){
             const newBoard = helper.generateNewBoard(board, index, currentSymbol)
-            await setBoard(newBoard)
-            forceUpdate()
+            act(()=>{setBoard(newBoard)})
+
             if (helper.hasWon(newBoard, currentSymbol)){
                 helper.showNotification(setNotification, `${currentSymbol} has won!`)
                 setTimeout(()=>{
@@ -64,6 +78,7 @@ const Board = () =>{
                 },3000)
                 return;
             }
+            switchTurns()
             return newBoard
 
 

@@ -49,11 +49,11 @@ const boardHelper = {
         [2,4,6]
     ],
 
-    hasWon (board:Array<string>, currentSymbol:string):boolean {
+    hasWon (board:Array<string>, symbol:string):boolean {
         let winner = false
 
         this.winningCombos.map(combo =>{
-            if ((board[combo[0]] === currentSymbol) && (board[combo[1]] === currentSymbol) && (board[combo[2]] === currentSymbol)){
+            if (board[combo[0]] === symbol && board[combo[1]] === symbol && board[combo[2]] === symbol){
                 winner = true
             }
         })
@@ -62,116 +62,14 @@ const boardHelper = {
     
     hasDrawn (board:Array<string>):boolean {
         let nonEmptySquares = board.filter(x=>x)
-    
-        if (nonEmptySquares.length === board.length -1){
+        ///removed a -1
+        if (nonEmptySquares.length === board.length){
             return true
         }
         return false
 
-    },
-    evaluateBoard (board:Array<string>, symbol:string):number {
-        let score = 0;
-        const oppositeSymbol = symbol === "X" ? "O":"X"
-        if(this.hasWon(board, symbol)){
-            score = 10
-        }
-        if(this.hasWon(board, oppositeSymbol)){
-            score = -10
-        }
-        return score
-    },
-    returnEmptyIndexes(board:Array<string>):Array<number>{
-        let emptyIndexes:Array<number> = []
-        board.map((square:string, index:number)=>{
-            if (square === ""){
-                emptyIndexes.push(index)
-            }
-        })
-        return emptyIndexes
-    },
-    bestMove (board:Array<string>):number {
-
-        let newBoard = board.slice()
-        const emptyIndexes = this.returnEmptyIndexes(board)
-        console.log(emptyIndexes)
-        let bestMove = -1;
-        let bestValue = -1000
-        emptyIndexes.map((emptyIndex)=>{
-            newBoard[emptyIndex] = "O"
-            const value = this.minimax(newBoard, 0, false)
-            if (value > bestValue){
-                bestMove = emptyIndex
-                bestValue = value
-            }
-        })
-        for (let number in emptyIndexes){
-            newBoard[number] = "O"
-            const value = this.minimax(newBoard, 0, false)
-            if (value > bestValue){
-                bestMove = Number(number);
-                bestValue = value
-            }
-        }
-        return bestMove;
-    },
-
-    
-
-    minimax (board:Array<string>, depth:number, playersTurn:boolean):number {
-        const currentSymbol = playersTurn? "X" : "O"
-        let score = this.evaluateBoard(board, currentSymbol)
-        if(score === 10){
-            return score
-        }
-        if(score === -10){
-            return score
-        }
-        if(playersTurn){
-
-            let bestValue = Infinity
-            
-            board.map((square:string, index:number) =>{
-
-                let newBoard = board.slice()
-
-                if (square === ""){
-
-                    newBoard[index] = currentSymbol
-
-                    const newValue = this.minimax(newBoard, depth +1, !playersTurn)
-                    newBoard[index] = ""
-
-                    if (newValue < bestValue){
-                        bestValue = newValue
-                    }
-                }
-            })
-            return bestValue
-        }
-        if (!playersTurn){
-
-            let bestValue = -Infinity
-
-            board.map((_square:string, index:number) =>{
-                
-                let newBoard = board.slice()
-
-                if (_square = ""){
-                    
-                    newBoard[index] = currentSymbol
-
-                    const newValue = this.minimax(newBoard, depth+1, !playersTurn)
-                    newBoard[index] = ""
-                    
-                    if (newValue > bestValue){
-                        bestValue = newValue
-                    }
-                }
-            })
-            return bestValue
-        }
-        return 0;
     }
+    
 
 }
 
