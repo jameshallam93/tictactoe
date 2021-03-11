@@ -10,7 +10,9 @@
     "scripts": {
         "start": "webpack serve --open",
         "build": "webpack --mode production",
+
         "test": "jest --verbose --watchAll"
+
     },
     "devDependencies": {
         "@babel/core": "^7.13.8",
