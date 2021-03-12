@@ -1,3 +1,4 @@
+
 import helper from "./boardHelper"
 
 
@@ -119,6 +120,5 @@ const minimax = (board:Array<string>, depth:number, playersTurn:boolean):number 
     })
     return bestValue
 }
-
 
 export default bestMove

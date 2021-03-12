@@ -8,9 +8,7 @@ import bestMove from "./helpers/minimax"
 //NB currently, player must always be O for the internal logic to work
 
 
-
-
-const Board = () =>{
+const Board = ():any =>{
 
     const[playersTurn, setPlayersTurn] = useState(true)
     const[board, setBoard] = useState(["","","","","","","","",""])
@@ -27,7 +25,6 @@ const Board = () =>{
     const resetBoard = () =>{
         setBoard(["","","","","","","","",""])
     }
-
 
 
     const cpuTurn = async () =>{
