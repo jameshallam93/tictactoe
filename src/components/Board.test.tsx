@@ -5,6 +5,7 @@ import { render, fireEvent } from "@testing-library/react"
 import "@testing-library/jest-dom/extend-expect"
 
 
+
 //to do:
 // test conditional rendering of Notification component
 
@@ -120,7 +121,6 @@ describe("clicking on", ()=>{
         test("calls on helper.generateNewBoard only once", ()=>{
 
             fireEvent.click(buttons[0])
-
 
             fireEvent.click(buttons[0])
 

@@ -1,7 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import Board from "./Board"
-const App = ():any =>{
 
+const App = ():any =>{
     return (
         <div>
             <Board />
