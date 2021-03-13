@@ -1,18 +1,18 @@
 import helper from "./boardHelper"
 
 
-const evaluateBoard = (board:Array<string>):number =>{
+export const evaluateBoard = (board:Array<string>):number =>{
 
-    const playersSymbol = "X"
-    const cpuSymbol = "O"
+    const cpuSymbol = "X"
+    const playersSymbol = "O"
 
-
-    if(helper.hasWon(board, cpuSymbol)){
+    
+    if(helper.hasWon(board, playersSymbol)){
 
         return -10
     }
 
-    if(helper.hasWon(board, playersSymbol)){
+    if(helper.hasWon(board, cpuSymbol)){
         return 10
     }    
     return 0
@@ -22,7 +22,7 @@ const returnEmptyIndexes = (board:Array<string>):Array<number> =>{
 
     let emptyIndexes:Array<number> = []
 
-    board.map((square:string, index:number)=>{
+    board.forEach((square:string, index:number)=>{
         if (square === ""){
             emptyIndexes.push(index)
         }
@@ -36,34 +36,27 @@ const bestMove =  (board:Array<string>, currentSymbol:string):number => {
     let newBoard = board.slice()
     const emptyIndexes = returnEmptyIndexes(board)
 
-    let bestMove = -1;
+
     let bestValue = -1000
 
-    //negative scores are not being pushed to the top of the stack
-    emptyIndexes.map((emptyIndex)=>{
-
+    const bestMove = emptyIndexes.reduce((currentBest:number, emptyIndex:number):number=>{
         newBoard[emptyIndex] = currentSymbol
-
-        const value = minimax(newBoard, 0, true)
-        if (value === -10){
-
-            
-        }
+        const newValue = minimax(newBoard, 0, true)
         newBoard[emptyIndex] = ""
-
-        if (value > bestValue){
-            console.log(`new best move: ${emptyIndex} \n new best value: ${value}`)
-            bestMove = emptyIndex
-            bestValue = value
+        if (newValue > bestValue){
+            bestValue = newValue
+            return emptyIndex
         }
-    })
+        return currentBest
+    },-1)
+
 
     return bestMove;
 }
 
 
 
-const minimax = (board:Array<string>, depth:number, playersTurn:boolean):number => {
+export const minimax = (board:Array<string>, depth:number, playersTurn:boolean):number => {
     
     const currentSymbol = playersTurn? "X" : "O"
     let score = evaluateBoard(board)
@@ -80,28 +73,42 @@ const minimax = (board:Array<string>, depth:number, playersTurn:boolean):number 
         return 0;
     }
     if(!playersTurn){
-        let bestValue = -1000
 
-        board.map((square:string, index:number) =>{
-            
+        const bestMaximValue = board.reduce((currentBest:number, square:string, index:number):number=>{
             let newBoard = board.slice()
 
-            if (square === ""){
-                
+            if(square === ""){
                 newBoard[index] = "X"
                 const newDepth = depth + 1
                 const newValue = minimax(newBoard, newDepth, true)
 
-                if (newValue > bestValue){
-                    bestValue = newValue
+                if (newValue > currentBest){
+                    return newValue
                 }
             }
-        })
-        return bestValue
+            return currentBest
+        },-1000)
+        return bestMaximValue
     }
 
+    const bestMinimValue = board.reduce((currentBest:number, square:string, index:number):number =>{
+        let newBoard = board.slice()
+
+        if (square === ""){
+            newBoard[index] = "O"
+            const newDepth = depth + 1
+            const newValue = minimax(newBoard, newDepth, false)
+
+            if (newValue < currentBest){
+                return newValue
+            }
+        }
+        return currentBest
+    },1000)
+    return bestMinimValue
+    /*
     let bestValue = 1000
-        
+        ///change to reduce
     board.map((square:string, index:number) =>{
 
         let newBoard = board.slice()
@@ -118,6 +125,7 @@ const minimax = (board:Array<string>, depth:number, playersTurn:boolean):number 
         }
     })
     return bestValue
+    */
 }
 
 
