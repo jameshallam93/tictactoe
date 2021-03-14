@@ -13,7 +13,7 @@ Todos:
   - ~~implement hasDrawn() function~~
   - ~~implement AI/cpu logic~~
   - ~~resetBoard() function~~
-  - choose player symbol? x/o
+  - fix pseudo random start turn (seems to heavily favour player current}
   
 ### future features
   - data collection and visualisation based on all played games
@@ -22,6 +22,6 @@ Todos:
   
 ## bugs/other
   - ~~reformat into separate modules~~
-  - Find more reactive way of storing board state to enable smooth transition to cpu turn (get rid of button)
-  - Fix issue where cpu will purposefully lose if playing as "X"
+  - ~~Find more reactive way of storing board state to enable smooth transition to cpu turn (get rid of button)~~
+  - ~~Fix issue where cpu will purposefully lose if playing as "X"~~
   - 
