@@ -1,34 +1,38 @@
-import React, { useEffect, useReducer } from "react"
+import React, { useEffect } from "react"
 import { useState } from "react"
 import Notification from "./Notification"
 import helper from "./helpers/boardHelper"
 import { act } from "react-dom/test-utils"
 import bestMove from "./helpers/minimax"
 
+
+
 //NB currently, player must always be O for the internal logic to work
 
-
-
-
 const Board = () =>{
-
-    const[playersTurn, setPlayersTurn] = useState(true)
+    //pseudo random turn picker
+    const generateRandomBoolean = () =>{
+        return Math.random() > .5
+    }
+    const[playersTurn, setPlayersTurn] = useState(generateRandomBoolean())
     const[board, setBoard] = useState(["","","","","","","","",""])
     const[notification, setNotification] = useState("")
 
-
+    useEffect(()=>{
+        if(!playersTurn){
+            cpuTurn()
+        }
+    })
     const switchTurns = async () =>{
         act(()=>
         setPlayersTurn(!playersTurn))
     }
-    const playerSymbol = "O"
-    const cpuSymbol = "X"
-
+    let playerSymbol = "O"
+    let cpuSymbol = "X"
+    
     const resetBoard = () =>{
         setBoard(["","","","","","","","",""])
     }
-
-
 
     const cpuTurn = async () =>{
 
@@ -38,17 +42,14 @@ const Board = () =>{
         cpuBoard[cpuMove] = cpuSymbol
 
         act(()=>{setBoard(cpuBoard)})
-
-        const winOrDraw = helper.checkForWinOrDraw(setNotification, resetBoard, cpuBoard, cpuSymbol)
-        if (!winOrDraw){
+        helper.checkForWinOrDraw(setNotification, resetBoard, cpuBoard, cpuSymbol)
         switchTurns()
-        }
         
-
     }
 
     const takeUserTurn = async (index:number) =>{
         await setSquareValue(index)
+
     }
 
     const setSquareValue = async (index:number) =>{
@@ -75,6 +76,7 @@ const Board = () =>{
         <div className = "container">
         <h1> {helper.boardHeader}</h1>
         <h4> {helper.boardInfo}</h4>
+
 
         <div className = "notification">
             {notification? 

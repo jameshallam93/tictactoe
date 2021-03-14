@@ -86,25 +86,19 @@ describe("clicking on", ()=>{
         test("changes the value of the square to the appropriate symbool", ()=>{
     
             fireEvent.click(buttons[0])
-            expect(buttons[0]).toHaveTextContent("X"||"O")
+
+            expect(buttons[0]).toHaveTextContent("X")
+        
     
         })
     })
     describe("an empty square, followed by a different empty square", ()=>{
-        test("changes the value of one of the squares to an X, and the other to an O", ()=>{
 
+        test("calls on helper.generateNewBoard",()=>{
             fireEvent.click(buttons[0])
+            fireEvent.click(buttons[8])
 
-            expect(buttons[0]).toHaveTextContent("O")
-
-            fireEvent.click(buttons[1])
-            expect(buttons[1]).toHaveTextContent("X")
-        })
-        test("calls on helper.generateNewBoard twice",()=>{
-            fireEvent.click(buttons[0])
-            fireEvent.click(buttons[1])
-
-            expect(generateNewBoardSpy).toHaveBeenCalledTimes(2)
+            expect(generateNewBoardSpy).toHaveBeenCalled()
         })
 
     })

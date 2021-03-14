@@ -30,15 +30,7 @@ let emptyBoard = [
     "","","",
     "","",""
 ]
-//to write:
 
-//The following boards:
-    //A board in which the cpu can win in one turn
-    //A board in which the player can win in one turn
-    //An early game board in which there are only two moves the cpu can make to not lose the game
-    //An empty board
-    //An empty board in which the cpu is given three turns
-    //
 
 const cpuMove = bestMove(testBoard, "X")
 

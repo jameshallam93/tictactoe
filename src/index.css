@@ -6,7 +6,7 @@ body{
 }
 .squareButton {
     width: 100px;
-    height: 100px
+    height: 100px;
 }
 .container {
     min-height: 100vh;

@@ -25,22 +25,22 @@ const config: webpack.Configuration = {
                 }
             },
             {
-            test: /\.css$/i,
-            use: ["style-loader", "css-loader"],
-            }
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
+              },
         ]
     },
     plugins : [
         new ForkTsCheckerWebpackPlugin({
             async:false,
             eslint: {
-                files: "./src/**/*"
+                files: "./src/**/*.tsx"
             }
         })
     ],
     //which files to look for in which order during module resolution
     resolve: {
-        extensions: [".tsx", ".ts", ".js"],
+        extensions: [".tsx", ".ts", ".js", ".css"],
     },
     //where bundle will be placed
     output: {
