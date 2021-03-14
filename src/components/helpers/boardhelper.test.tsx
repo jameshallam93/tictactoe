@@ -1,5 +1,4 @@
-
-import { render } from"@testing-library/react"
+import { render } from "@testing-library/react"
 import "@testing-library/jest-dom/extend-expect"
 
 import boardHelper from "./boardHelper"
@@ -108,7 +107,7 @@ describe("the hasWon function", ()=>{
             
             const truthValues = helper.returnHasWonTruthArray(winningBoards)
 
-            truthValues.map(truth =>{
+            truthValues.map((truth:boolean) =>{
                 expect(truth).toEqual(true)
             })
 

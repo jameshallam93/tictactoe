@@ -52,6 +52,7 @@ const boardTestHelper = {
         })
         return truthValues
     }
+}
 
 
 export default boardTestHelper
