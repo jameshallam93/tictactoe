@@ -4,8 +4,41 @@ import Notification from "./Notification"
 import helper from "./helpers/boardHelper"
 import { act } from "react-dom/test-utils"
 import bestMove from "./helpers/minimax"
+import axios from "axios"
+interface Statistics {
+    wins:number,
+    draws:number,
+    losses:number
+}
+const getAll = ()=>{
+    const request = axios.get("/api/stats")
+    return request.then(response => response.data)
+}
 
-
+const StatsTable = (props:({stats:Statistics})) =>{
+    const {wins, draws, losses} = props.stats
+    return(
+        <div className = "statsTable">
+            <table>
+                <tr>
+                    <th>Global Stats:</th>
+                </tr>
+                <tr>
+                    <td>Wins:</td>
+                    <td>{wins}</td>
+                </tr>
+                <tr>
+                    <td>Draws:</td>
+                    <td>{draws}</td>
+                </tr>
+                <tr>
+                    <td>Losses:</td>
+                    <td>{losses}</td>
+                </tr>
+            </table>
+        </div>
+    )
+}
 
 //NB currently, player must always be O for the internal logic to work
 
@@ -17,6 +50,21 @@ const Board = () =>{
     const[playersTurn, setPlayersTurn] = useState(generateRandomBoolean())
     const[board, setBoard] = useState(["","","","","","","","",""])
     const[notification, setNotification] = useState("")
+    const [stats, setStats] = useState({
+        wins: 0,
+        draws:0,
+        losses:0
+    })
+    
+
+    useEffect(()=>{
+        const getInitStats = async () =>{
+            const initStats = await getAll()
+            setStats(initStats[0])
+        }
+        getInitStats()
+
+    }, [])
 
     useEffect(()=>{
         if(!playersTurn){
@@ -76,7 +124,7 @@ const Board = () =>{
         <div className = "container">
         <h1> {helper.boardHeader}</h1>
         <h4> {helper.boardInfo}</h4>
-
+        <StatsTable stats = {stats} />
 
         <div className = "notification">
             {notification? 
@@ -84,10 +132,6 @@ const Board = () =>{
                 :
                 null
             }
-        </div>
-        <div className = "buttons">
-            <button onClick = {resetBoard}>reset</button>
-            <button onClick = {cpuTurn}> cpu</button>
         </div>
         <div className = "board">
             {helper.generateBoard(board, takeUserTurn)}

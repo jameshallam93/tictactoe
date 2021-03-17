@@ -42,7 +42,9 @@ const bestMove =  (board:Array<string>, currentSymbol:string):number => {
     const bestMove = emptyIndexes.reduce((currentBest:number, emptyIndex:number):number=>{
         newBoard[emptyIndex] = currentSymbol
         const newValue = minimax(newBoard, 0, true)
+
         newBoard[emptyIndex] = ""
+
         if (newValue > bestValue){
             bestValue = newValue
             return emptyIndex
@@ -106,26 +108,7 @@ export const minimax = (board:Array<string>, depth:number, playersTurn:boolean):
         return currentBest
     },1000)
     return bestMinimValue
-    /*
-    let bestValue = 1000
-        ///change to reduce
-    board.map((square:string, index:number) =>{
-
-        let newBoard = board.slice()
-
-        if (square === ""){
-            
-            newBoard[index] = "O"
-            const newDepth = depth + 1
-            const newValue = minimax(newBoard, newDepth, false)
-
-            if (newValue < bestValue){
-                bestValue = newValue    
-            }
-        }
-    })
-    return bestValue
-    */
+    
 }
 
 

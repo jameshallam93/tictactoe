@@ -2,7 +2,7 @@ import React from "react"
 
 const boardHelper = {
     boardHeader: "Tic Tac Toe",
-    boardInfo:"made using webpack and typescript",
+    boardInfo:`made using webpack and typescript; ai based on a minimax algorithm`,
 
     generateNewBoard(board:Array<string>, index:number, currentSymbol:string):Array<string> {
         let newBoard = board.slice()

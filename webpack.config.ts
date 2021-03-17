@@ -51,7 +51,12 @@ const config: webpack.Configuration = {
     devServer: {
         contentBase : path.join(__dirname, "build"),
         compress: true,
-        port: 3002
+        port: 3002,
+        watchContentBase:true,
+        publicPath: "/",
+        proxy:{
+            "/api": "http://localhost:3005",
+        }
     }
 }
 
