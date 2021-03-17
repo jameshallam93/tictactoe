@@ -8,6 +8,11 @@ import bestMove from "./helpers/minimax"
 import statsService from "../services/statsService"
 
 
+interface Statistics {
+    wins:number,
+    draws:number,
+    losses:number
+}
 //NB currently, player must always be O for the internal logic to work
 
 const Board = () =>{
@@ -23,20 +28,13 @@ const Board = () =>{
         draws:0,
         losses:0
     })
-
-
+    const playerSymbol = "O"
+    const cpuSymbol = "X"
 
     useEffect(()=>{
-        const getInitStats = async () =>{
-            const initStats = await statsService.getAll()
-            setStats(initStats[0])
-        }
-        getInitStats()
-
+        helper.getInitStats(setStats)
     },[])
-    useEffect(()=>{
-        setPlayersTurn(generateRandomBoolean())
-    },[])
+    //find a way to randomise turns between games - issue with flow control currently
 
     useEffect(()=>{
         if(!playersTurn){
@@ -45,18 +43,37 @@ const Board = () =>{
     })
 
     const resetBoard = () =>{
-        setBoard(["","","","","","","","",""])
+        //setTimeout(()=>{
+            setBoard(["","","","","","","","",""])
+        //}, 3000)
     }
 
-    const switchTurns = async () =>{
-        act(()=>
-        setPlayersTurn(!playersTurn))
+    const switchTurns = () =>{
+        setPlayersTurn(!playersTurn)
     }
-    let playerSymbol = "O"
-    let cpuSymbol = "X"
+
+    const handleTurnChange = (newBoard:Array<string>, symbol:string) =>{
+
+        const isWin = helper.hasWon(newBoard, symbol)
+        const isDraw = helper.hasDrawn(newBoard)
+
+        if (isWin){
+            setTimeout(()=>{
+                resetBoard()
+            }, 3000)
+            helper.handleWin(setStats, symbol)
+            helper.showNotification(setNotification, `${symbol} has won!`)
+        }
+        if (isDraw){
+            setTimeout(()=>{
+                resetBoard()
+            }, 3000)
+            helper.handleDraw(setStats)
+            helper.showNotification(setNotification, "Its a tie! Try again!")
+        }
+        switchTurns()
+    }
     
-
-
     const cpuTurn = async () =>{
 
         const cpuMove = bestMove(board, cpuSymbol)
@@ -65,32 +82,24 @@ const Board = () =>{
         cpuBoard[cpuMove] = cpuSymbol
 
         act(()=>{setBoard(cpuBoard)})
-        helper.checkForWinOrDraw(setStats, setNotification, resetBoard, cpuBoard, cpuSymbol)
-        switchTurns()
+        handleTurnChange(cpuBoard, cpuSymbol)
         
     }
 
-    const takeUserTurn = async (index:number) =>{
-        await setSquareValue(index)
-    }
 
-    const setSquareValue = async (index:number) =>{
+    const takeUserTurn = (index:number) =>{
 
         if (board[index] === ""){
 
             const newBoard = helper.generateNewBoard(board, index, playerSymbol)
-            act(()=>{setBoard(newBoard)})
+            setBoard(newBoard)
 
-            const winOrDraw = await helper.checkForWinOrDraw(setStats, setNotification, resetBoard, newBoard, playerSymbol)
-            if (!winOrDraw){
-                switchTurns()
-            }
-            return newBoard
+            handleTurnChange(newBoard, playerSymbol)
+            return 
         }
         helper.showNotification(setNotification, "That square is already taken, please try again")
         return
-    
-        }
+    }
     
 
     return (

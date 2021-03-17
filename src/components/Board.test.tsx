@@ -43,8 +43,8 @@ describe("the component correctly renders the following elements:", ()=>{
 
         expect(notificationDiv).not.toEqual(null)
     })
-    test("div with className buttons",()=>{
-        const buttonsDiv = component.container.querySelector(".buttons")
+    test("div with global stats table",()=>{
+        const buttonsDiv = component.container.querySelector(".statsTable")
 
         expect(buttonsDiv).not.toEqual(null)
     })
@@ -79,15 +79,15 @@ describe("clicking on", ()=>{
 
         test("calls on helper.generateNewBoard", ()=>{
     
-            fireEvent.click(buttons[0])
+            fireEvent.click(buttons[1])
             expect(generateNewBoardSpy).toHaveBeenCalled()
     
         })
-        test("changes the value of the square to the appropriate symbool", ()=>{
+        test("changes the value of the square to the appropriate symbol", ()=>{
     
-            fireEvent.click(buttons[0])
+            fireEvent.click(buttons[1])
 
-            expect(buttons[0]).toHaveTextContent("X")
+            expect(buttons[1]).toHaveTextContent("O")
         
     
         })

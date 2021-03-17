@@ -27,13 +27,6 @@ const boardHelper = {
         }, 3000)
     },
 
-    showNotificationAndResetBoard  (setNotification:(notification:string)=>void, resetBoard:()=>void, notification:string) {
-        this.showNotification(setNotification, notification)
-        setTimeout(()=>{
-            resetBoard()
-        }, 3000)
-    },
-
     generateBoard (board:Array<string>, setPlayerChoice:(index:number)=>void):any {
         return(
 
@@ -64,16 +57,19 @@ const boardHelper = {
         [2,4,6]
     ],
 
+    async getInitStats (setStats:(stats:Statistics)=>void){
+        const initStats = await statsService.getAll()
+        setStats(initStats[0])
+    },
+
     hasWon (board:Array<string>, symbol:string):boolean {
         let winner = false
 
         this.winningCombos.map(combo =>{
             if (board[combo[0]] === symbol && board[combo[1]] === symbol && board[combo[2]] === symbol){
                 winner = true
-
             }
         })
-
         return winner
     },
     
@@ -86,31 +82,23 @@ const boardHelper = {
         return false
 
     },
-    async checkForWinOrDraw (setStats:(stats:Statistics)=>void,setNotification:(notification:string)=>void, resetBoard:()=>void, board:Array<string>, currentSymbol:string):Promise<boolean> {
-        if (this.hasWon(board, currentSymbol)){
-            if (currentSymbol === "X"){
-                const newStats = await statsService.updateStat("win")
-                setStats(newStats)
-            
-            }
-            if (currentSymbol === "O"){
-                const newStats = await statsService.updateStat("loss")
-                setStats(newStats)
-            }
-            this.showNotificationAndResetBoard(setNotification, resetBoard, `${currentSymbol} has won!`)
 
+    async handleWin (setStats:(stats:Statistics)=>void,symbol:string) {
+        let newStats;
+        if (symbol === "X"){
+            newStats = await statsService.updateStat("win")
+        }
+        if (symbol === "O"){
+            newStats = await statsService.updateStat("loss")
+        }
+        setStats(newStats)
+    },
 
-            return true
-        }
-        if (this.hasDrawn(board)){
-            const newStats = await statsService.updateStat("draw")
-            setStats(newStats)
-            this.showNotificationAndResetBoard(setNotification, resetBoard, "Its a tie! Try again!")
-            return true
-        }
-        return false
-        }
-
+    async handleDraw (setStats:(stats:Statistics)=>void){
+        const newStats = await statsService.updateStat("draw")
+        setStats(newStats)
+    }
+    
 }
 
 export default boardHelper
