@@ -1,44 +1,12 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
 import Notification from "./Notification"
+import StatsTable from "./StatsTable"
 import helper from "./helpers/boardHelper"
 import { act } from "react-dom/test-utils"
 import bestMove from "./helpers/minimax"
-import axios from "axios"
-interface Statistics {
-    wins:number,
-    draws:number,
-    losses:number
-}
-const getAll = ()=>{
-    const request = axios.get("/api/stats")
-    return request.then(response => response.data)
-}
+import statsService from "../services/statsService"
 
-const StatsTable = (props:({stats:Statistics})) =>{
-    const {wins, draws, losses} = props.stats
-    return(
-        <div className = "statsTable">
-            <table>
-                <tr>
-                    <th>Global Stats:</th>
-                </tr>
-                <tr>
-                    <td>Wins:</td>
-                    <td>{wins}</td>
-                </tr>
-                <tr>
-                    <td>Draws:</td>
-                    <td>{draws}</td>
-                </tr>
-                <tr>
-                    <td>Losses:</td>
-                    <td>{losses}</td>
-                </tr>
-            </table>
-        </div>
-    )
-}
 
 //NB currently, player must always be O for the internal logic to work
 
@@ -55,22 +23,31 @@ const Board = () =>{
         draws:0,
         losses:0
     })
-    
+
+
 
     useEffect(()=>{
         const getInitStats = async () =>{
-            const initStats = await getAll()
+            const initStats = await statsService.getAll()
             setStats(initStats[0])
         }
         getInitStats()
 
-    }, [])
+    },[])
+    useEffect(()=>{
+        setPlayersTurn(generateRandomBoolean())
+    },[])
 
     useEffect(()=>{
         if(!playersTurn){
             cpuTurn()
         }
     })
+
+    const resetBoard = () =>{
+        setBoard(["","","","","","","","",""])
+    }
+
     const switchTurns = async () =>{
         act(()=>
         setPlayersTurn(!playersTurn))
@@ -78,9 +55,7 @@ const Board = () =>{
     let playerSymbol = "O"
     let cpuSymbol = "X"
     
-    const resetBoard = () =>{
-        setBoard(["","","","","","","","",""])
-    }
+
 
     const cpuTurn = async () =>{
 
@@ -90,14 +65,13 @@ const Board = () =>{
         cpuBoard[cpuMove] = cpuSymbol
 
         act(()=>{setBoard(cpuBoard)})
-        helper.checkForWinOrDraw(setNotification, resetBoard, cpuBoard, cpuSymbol)
+        helper.checkForWinOrDraw(setStats, setNotification, resetBoard, cpuBoard, cpuSymbol)
         switchTurns()
         
     }
 
     const takeUserTurn = async (index:number) =>{
         await setSquareValue(index)
-
     }
 
     const setSquareValue = async (index:number) =>{
@@ -107,7 +81,7 @@ const Board = () =>{
             const newBoard = helper.generateNewBoard(board, index, playerSymbol)
             act(()=>{setBoard(newBoard)})
 
-            const winOrDraw = helper.checkForWinOrDraw(setNotification, resetBoard, newBoard, playerSymbol)
+            const winOrDraw = await helper.checkForWinOrDraw(setStats, setNotification, resetBoard, newBoard, playerSymbol)
             if (!winOrDraw){
                 switchTurns()
             }

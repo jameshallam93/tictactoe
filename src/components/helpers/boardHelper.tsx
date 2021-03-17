@@ -1,4 +1,12 @@
 import React from "react"
+import statsService from "../../services/statsService"
+
+
+interface Statistics {
+    wins:number,
+    draws:number,
+    losses:number
+}
 
 const boardHelper = {
     boardHeader: "Tic Tac Toe",
@@ -62,8 +70,10 @@ const boardHelper = {
         this.winningCombos.map(combo =>{
             if (board[combo[0]] === symbol && board[combo[1]] === symbol && board[combo[2]] === symbol){
                 winner = true
+
             }
         })
+
         return winner
     },
     
@@ -76,14 +86,25 @@ const boardHelper = {
         return false
 
     },
-    checkForWinOrDraw (setNotification:(notification:string)=>void, resetBoard:()=>void, board:Array<string>, currentSymbol:string):boolean {
+    async checkForWinOrDraw (setStats:(stats:Statistics)=>void,setNotification:(notification:string)=>void, resetBoard:()=>void, board:Array<string>, currentSymbol:string):Promise<boolean> {
         if (this.hasWon(board, currentSymbol)){
-
+            if (currentSymbol === "X"){
+                const newStats = await statsService.updateStat("win")
+                setStats(newStats)
+            
+            }
+            if (currentSymbol === "O"){
+                const newStats = await statsService.updateStat("loss")
+                setStats(newStats)
+            }
             this.showNotificationAndResetBoard(setNotification, resetBoard, `${currentSymbol} has won!`)
+
+
             return true
         }
         if (this.hasDrawn(board)){
-
+            const newStats = await statsService.updateStat("draw")
+            setStats(newStats)
             this.showNotificationAndResetBoard(setNotification, resetBoard, "Its a tie! Try again!")
             return true
         }
