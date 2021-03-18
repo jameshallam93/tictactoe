@@ -2,6 +2,7 @@ import React from "react"
 import Board from "./Board"
 import boardHelper from "./helpers/boardHelper"
 import { render, fireEvent } from "@testing-library/react"
+import * as bestMove from "./helpers/minimax"
 import "@testing-library/jest-dom/extend-expect"
 
 
@@ -53,7 +54,11 @@ describe("the component correctly renders the following elements:", ()=>{
 
         expect(boardDiv).not.toEqual(null)
     })
-   
+    test("the StatsTable component", ()=>{
+        const statsTable = component.container.querySelector("table")
+
+        expect(statsTable).not.toEqual(null)
+    })
     })
 
 
@@ -63,6 +68,7 @@ describe("clicking on", ()=>{
     let buttons:any;
 
     const generateNewBoardSpy = jest.spyOn(boardHelper, "generateNewBoard")
+    const bestMoveSpy = jest.spyOn(bestMove, "default")
 
     beforeEach(()=>{
         component = render(
@@ -73,6 +79,7 @@ describe("clicking on", ()=>{
 
     afterEach(()=>{
         generateNewBoardSpy.mockClear()
+        bestMoveSpy.mockClear()
     })
 
     describe("an empty square", ()=>{
@@ -88,9 +95,13 @@ describe("clicking on", ()=>{
             fireEvent.click(buttons[1])
 
             expect(buttons[1]).toHaveTextContent("O")
-        
-    
         })
+        test("then causes the cpu to take their turn, calling on bestMove from minimax module", ()=>{
+
+            fireEvent.click(buttons[1])
+            expect(bestMoveSpy).toHaveBeenCalled()
+        })
+
     })
     describe("an empty square, followed by a different empty square", ()=>{
 
@@ -112,13 +123,13 @@ describe("clicking on", ()=>{
 
             expect(buttons[0].textContent).toEqual(symbol)
         })
-        test("calls on helper.generateNewBoard only once", ()=>{
+        test("calls on helper.generateNewBoard once for player, and once for cpu (twice total) **PASSES 50% DUE TO RANDOM FIRST TURN***", ()=>{
 
-            fireEvent.click(buttons[0])
+            fireEvent.click(buttons[1])
 
-            fireEvent.click(buttons[0])
+            fireEvent.click(buttons[1])
 
-            expect(generateNewBoardSpy).toBeCalledTimes(1)
+            expect(generateNewBoardSpy).toBeCalledTimes(2)
 
         })
     })

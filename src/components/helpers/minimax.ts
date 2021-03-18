@@ -6,9 +6,7 @@ export const evaluateBoard = (board:Array<string>):number =>{
     const cpuSymbol = "X"
     const playersSymbol = "O"
 
-    
     if(helper.hasWon(board, playersSymbol)){
-
         return -10
     }
 
@@ -57,10 +55,8 @@ const bestMove =  (board:Array<string>, currentSymbol:string):number => {
 }
 
 
-
 export const minimax = (board:Array<string>, depth:number, playersTurn:boolean):number => {
     
-    const currentSymbol = playersTurn? "X" : "O"
     let score = evaluateBoard(board)
 
     if(score === -10){

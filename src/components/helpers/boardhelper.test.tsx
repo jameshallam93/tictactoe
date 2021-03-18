@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react"
 import "@testing-library/jest-dom/extend-expect"
+import statService from "../../services/statsService"
 
 import boardHelper from "./boardHelper"
 import helper from "./testHelpers/boardTestHelper"
@@ -175,3 +176,51 @@ describe("the hasDrawn function", ()=>{
     })
 })
 
+describe("the handle win function", ()=>{
+    statService.updateStat = jest.fn()
+    const setStatsMock = jest.fn()
+    afterEach(()=>{
+        //ts error - mockReset still works as expected - may be fixed by importing mocks above module import?
+        statService.updateStat.mockReset()
+        setStatsMock.mockReset()
+    })
+
+    describe("When passed an X as a parameter", ()=>{
+
+        test("calls on statService/updateStat once", async ()=>{
+            await boardHelper.handleWin(setStatsMock, "X")
+            expect(statService.updateStat).toHaveBeenCalledTimes(1)
+        })
+        test("calls on setStats once ", async ()=>{
+            await boardHelper.handleWin(setStatsMock, "X")
+            expect(setStatsMock).toHaveBeenCalledTimes(1)
+        })
+    })
+    describe("when passed O as a parameter", ()=>{
+        test("calls on statService/updateStat once", async ()=>{
+            await boardHelper.handleWin(setStatsMock, "O")
+            expect(statService.updateStat).toHaveBeenCalledTimes(1)
+        })
+        test("calls on setStats once ", async ()=>{
+            await boardHelper.handleWin(setStatsMock, "O")
+            expect(setStatsMock).toHaveBeenCalledTimes(1)
+        })
+    })
+})
+describe("the handleDraw function",()=>{
+    statService.updateStat = jest.fn()
+    const setStatsMock = jest.fn()
+    afterEach(()=>{
+        //ts error - mockReset still works as expected - may be fixed by importing mocks above module import?
+        statService.updateStat.mockReset()
+        setStatsMock.mockReset()
+    })
+    test("calls on statService/updateStat once", async ()=>{
+        await boardHelper.handleDraw(setStatsMock)
+        expect(statService.updateStat).toHaveBeenCalledTimes(1)
+    })
+    test("calls on setStats once", async ()=>{
+        await boardHelper.handleDraw(setStatsMock)
+        expect(setStatsMock).toBeCalledTimes(1)
+    })
+})
