@@ -16,7 +16,7 @@ Todos:
   - fix pseudo random start turn (seems to heavily favour player current}
   
 ### future features
-  - data collection and visualisation based on all played games
+  - ~~data collection and visualisation based on all played games~~
   - user login system and rankings
   - multiplayer over internet?
   
