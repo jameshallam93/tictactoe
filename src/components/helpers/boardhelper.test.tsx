@@ -177,11 +177,12 @@ describe("the hasDrawn function", ()=>{
 })
 
 describe("the handle win function", ()=>{
-    statService.updateStat = jest.fn()
+    const updateStatSpy = jest.spyOn(statService, "updateStat")
+    //statService.updateStat = jest.fn()
     const setStatsMock = jest.fn()
     afterEach(()=>{
         //ts error - mockReset still works as expected - may be fixed by importing mocks above module import?
-        statService.updateStat.mockReset()
+        updateStatSpy.mockReset()
         setStatsMock.mockReset()
     })
 
@@ -208,11 +209,12 @@ describe("the handle win function", ()=>{
     })
 })
 describe("the handleDraw function",()=>{
-    statService.updateStat = jest.fn()
+    const updateStatSpy = jest.spyOn(statService, "updateStat")
+    //statService.updateStat = jest.fn()
     const setStatsMock = jest.fn()
     afterEach(()=>{
         //ts error - mockReset still works as expected - may be fixed by importing mocks above module import?
-        statService.updateStat.mockReset()
+        updateStatSpy.mockReset()
         setStatsMock.mockReset()
     })
     test("calls on statService/updateStat once", async ()=>{

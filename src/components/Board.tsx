@@ -3,16 +3,11 @@ import { useState } from "react"
 import Notification from "./Notification"
 import StatsTable from "./StatsTable"
 import helper from "./helpers/boardHelper"
-import { act } from "react-dom/test-utils"
 import bestMove from "./helpers/minimax"
-import statsService from "../services/statsService"
+import BarChart from "./BarChart"
 
 
-interface Statistics {
-    wins:number,
-    draws:number,
-    losses:number
-}
+
 //NB currently, player must always be O for the internal logic to work
 
 const Board = () =>{
@@ -77,7 +72,7 @@ const Board = () =>{
         const cpuMove = bestMove(board, cpuSymbol)
         const cpuBoard = helper.generateNewBoard(board, cpuMove, cpuSymbol)
 
-        act(()=>{setBoard(cpuBoard)})
+        setBoard(cpuBoard)
         handleTurnChange(cpuBoard, cpuSymbol)
         
     }
@@ -103,7 +98,10 @@ const Board = () =>{
         <h1> {helper.boardHeader}</h1>
         <h4> {helper.boardInfo}</h4>
         <StatsTable stats = {stats} />
-
+        <div className = "chartDiv"
+            style = {{maxHeight:150, maxWidth:200}}>
+            <BarChart stats = {stats} />
+        </div>
         <div className = "notification">
             {notification? 
                 <Notification notice = {notification}/>
@@ -114,6 +112,7 @@ const Board = () =>{
         <div className = "board">
             {helper.generateBoard(board, takeUserTurn)}
         </div>
+
 
         </div>
     </>

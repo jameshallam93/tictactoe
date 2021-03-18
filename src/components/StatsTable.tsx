@@ -1,15 +1,14 @@
 import React from "react"
+import { Bar } from "react-chartjs-2"
+import { Statistics } from "./models/statistics"
 
-interface Statistics {
-    wins:number,
-    draws:number,
-    losses:number
-}
 
 
 const StatsTable = (props:({stats:Statistics})) =>{
     const {wins, draws, losses} = props.stats
+
     return(
+        <>
         <div className = "statsTable">
             <table>
                 <tbody>
@@ -31,6 +30,8 @@ const StatsTable = (props:({stats:Statistics})) =>{
                 </tbody>
             </table>
         </div>
+
+        </>
     )
 }
 
