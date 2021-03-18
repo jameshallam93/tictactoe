@@ -1,12 +1,6 @@
 import React from "react"
 import statsService from "../../services/statsService"
-
-
-interface Statistics {
-    wins:number,
-    draws:number,
-    losses:number
-}
+import { Statistics } from "../models/statistics"
 
 const boardHelper = {
     boardHeader: "Tic Tac Toe",
