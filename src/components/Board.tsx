@@ -43,9 +43,7 @@ const Board = () =>{
     })
 
     const resetBoard = () =>{
-        //setTimeout(()=>{
             setBoard(["","","","","","","","",""])
-        //}, 3000)
     }
 
     const switchTurns = () =>{
@@ -77,15 +75,12 @@ const Board = () =>{
     const cpuTurn = async () =>{
 
         const cpuMove = bestMove(board, cpuSymbol)
-
-        let cpuBoard = board.slice()
-        cpuBoard[cpuMove] = cpuSymbol
+        const cpuBoard = helper.generateNewBoard(board, cpuMove, cpuSymbol)
 
         act(()=>{setBoard(cpuBoard)})
         handleTurnChange(cpuBoard, cpuSymbol)
         
     }
-
 
     const takeUserTurn = (index:number) =>{
 

@@ -87,11 +87,16 @@ const boardHelper = {
         let newStats;
         if (symbol === "X"){
             newStats = await statsService.updateStat("win")
+            setStats(newStats)
+            return;
         }
         if (symbol === "O"){
             newStats = await statsService.updateStat("loss")
+            setStats(newStats)
+            return;
         }
-        setStats(newStats)
+        console.error(`Error: invalid symbol presented at handleWin`);
+
     },
 
     async handleDraw (setStats:(stats:Statistics)=>void){
