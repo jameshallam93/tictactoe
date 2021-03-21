@@ -5,6 +5,9 @@ A learning project focussing on using typescript and webpack
 
 Uses a minimax algorithm to determine best cpu move
 
+Heroku link: http://hallams-tictactoe.herokuapp.com/
+
+
 Todos:
 
 ## features
