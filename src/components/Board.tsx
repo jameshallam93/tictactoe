@@ -80,6 +80,10 @@ const Board = () =>{
     const takeUserTurn = (index:number) =>{
 
         if (board[index] === ""){
+            //prevents user taking turn after CPU win
+            if (helper.hasWon(board, cpuSymbol)){
+                return;
+            }
 
             const newBoard = helper.generateNewBoard(board, index, playerSymbol)
             setBoard(newBoard)
