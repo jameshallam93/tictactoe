@@ -1,4 +1,7 @@
 # tictactoe
+
+[![Updated Badge](https://badges.pufler.dev/updated/jameshallam93/tictactoe)](https://badges.pufler.dev)
+
 Utilising typescript and webpack
 
 A learning project focussing on using typescript and webpack
@@ -7,6 +10,13 @@ Uses a minimax algorithm to determine best cpu move
 
 Heroku link: http://hallams-tictactoe.herokuapp.com/
 
+## Usage:
+
+<code> npm install </code> 
+
+<code> npm start </code>
+
+Visit http://localhost:3002/ to access the app.
 
 Todos:
 
