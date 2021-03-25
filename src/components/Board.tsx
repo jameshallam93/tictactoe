@@ -47,7 +47,7 @@ const Board = () =>{
 
     const handleTurnChange = (newBoard:Array<string>, symbol:string) =>{
 
-        const isWin = helper.hasWon(newBoard, symbol)
+        const isWin  = helper.hasWon(newBoard, symbol)
         const isDraw = helper.hasDrawn(newBoard)
 
         if (isWin){
@@ -80,7 +80,12 @@ const Board = () =>{
     const takeUserTurn = (index:number) =>{
 
         if (board[index] === ""){
-
+            //prevents user taking turn after cpu has already won 
+            if (helper.hasWon(board, cpuSymbol)){
+                console.log("CPU WIN");
+                
+                return
+            }
             const newBoard = helper.generateNewBoard(board, index, playerSymbol)
             setBoard(newBoard)
 
@@ -92,16 +97,15 @@ const Board = () =>{
     }
     
 
+    
+
     return (
     <>
         <div className = "container">
         <h1> {helper.boardHeader}</h1>
         <h4> {helper.boardInfo}</h4>
         <StatsTable stats = {stats} />
-        <div className = "chartDiv"
-            style = {{maxHeight:150, maxWidth:200}}>
-            <BarChart stats = {stats} />
-        </div>
+
         <div className = "notification">
             {notification? 
                 <Notification notice = {notification}/>
