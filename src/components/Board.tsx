@@ -102,10 +102,7 @@ const Board = () =>{
         <h1> {helper.boardHeader}</h1>
         <h4> {helper.boardInfo}</h4>
         <StatsTable stats = {stats} />
-        <div className = "chartDiv"
-            style = {{maxHeight:150, maxWidth:200}}>
-            <BarChart stats = {stats} />
-        </div>
+
         <div className = "notification">
             {notification? 
                 <Notification notice = {notification}/>

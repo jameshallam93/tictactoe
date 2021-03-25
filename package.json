@@ -1,6 +1,7 @@
 {
     "name": "tic-tac-toe",
     "version": "0.0.1",
+    "description": "TicTacToe game built with typescript and webpack",
     "dependencies": {
         "axios": "^0.21.1",
         "chart.js": "^2.9.4",
