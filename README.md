@@ -27,4 +27,4 @@ Todos:
   - ~~reformat into separate modules~~
   - ~~Find more reactive way of storing board state to enable smooth transition to cpu turn (get rid of button)~~
   - ~~Fix issue where cpu will purposefully lose if playing as "X"~~
-  - 
+  - ~~Fix issue whereby player can take their turn after CPU has won~~

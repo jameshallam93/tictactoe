@@ -47,7 +47,7 @@ const Board = () =>{
 
     const handleTurnChange = (newBoard:Array<string>, symbol:string) =>{
 
-        const isWin = helper.hasWon(newBoard, symbol)
+        const isWin  = helper.hasWon(newBoard, symbol)
         const isDraw = helper.hasDrawn(newBoard)
 
         if (isWin){
@@ -80,6 +80,7 @@ const Board = () =>{
     const takeUserTurn = (index:number) =>{
 
         if (board[index] === ""){
+
             //prevents user taking turn after CPU win
             if (helper.hasWon(board, cpuSymbol)){
                 return;
@@ -94,6 +95,8 @@ const Board = () =>{
         helper.showNotification(setNotification, "That square is already taken, please try again")
         return
     }
+    
+
     
 
     return (
