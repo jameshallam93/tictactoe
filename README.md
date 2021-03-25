@@ -18,7 +18,7 @@ Todos:
   - ~~resetBoard() function~~
   - fix pseudo random start turn (seems to heavily favour player current}
   
-### future features
+### Roadmap
   - ~~data collection and visualisation based on all played games~~
   - user login system and rankings
   - multiplayer over internet?
